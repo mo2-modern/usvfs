@@ -13,7 +13,7 @@
     },
     {
       "kind": "git",
-      "repository": "https://github.com/ModOrganizer2/vcpkg-registry",
+      "repository": "https://github.com/mo2-modern/vcpkg-registry",
       "baseline": "92f063c71cebea1926c7eb183fbe719145395985",
       "packages": ["asmjit", "spdlog"]
     }
