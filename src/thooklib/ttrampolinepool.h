@@ -134,9 +134,6 @@ private:
   };
 
   typedef std::map<LPVOID, BufferList> BufferMap;
-  static const intptr_t ADDRESS_MASK =
-      0xFFFFFFFFFF000000LL;  // mask to "round" addresses to consolidate near
-                             // trampolines
 
 private:
   TrampolinePool();

@@ -38,6 +38,15 @@ add_subdirectory(src/usvfs_helper)
 add_subdirectory(src/usvfs_dll)
 add_subdirectory(src/usvfs_proxy)
 
+if (MSVC)
+    # /WX on the shipping targets only. Deliberately not add_compile_options: that
+    # would also reach the BUILD_TESTING subtree below, which is not part of the
+    # measured build and would be turned red by a flag nobody verified it against.
+    foreach(usvfs_target shared thooklib tinjectlib usvfs_helper usvfs_dll usvfs_proxy)
+        target_compile_options(${usvfs_target} PRIVATE "/WX")
+    endforeach()
+endif()
+
 configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/config.cmake.in
   "${CMAKE_CURRENT_BINARY_DIR}/usvfsConfig.cmake"
   INSTALL_DESTINATION "lib/cmake/usvfs"

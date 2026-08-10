@@ -237,17 +237,17 @@ private:
   TreeT* createSubNode(const VoidAllocatorT& allocator, std::string_view name,
                        unsigned long flags, const T& data)
   {
-    auto* manager = allocator.get_segment_manager();
+    auto* segmentManager = allocator.get_segment_manager();
 
-    return manager->construct<TreeT>(bi::anonymous_instance)(
+    return segmentManager->construct<TreeT>(bi::anonymous_instance)(
         name, flags, TreeT::NodePtrT(),
-        createData<typename TreeT::DataT, T>(data, allocator), manager);
+        createData<typename TreeT::DataT, T>(data, allocator), segmentManager);
   }
 
   typename TreeT::NodePtrT createSubPtr(TreeT* subNode)
   {
-    SharedMemoryT::segment_manager* manager = m_SHM->get_segment_manager();
-    return TreeT::NodePtrT(subNode, allocator(), TreeT::DeleterT(manager));
+    SharedMemoryT::segment_manager* segmentManager = m_SHM->get_segment_manager();
+    return TreeT::NodePtrT(subNode, allocator(), TreeT::DeleterT(segmentManager));
   }
 
   template <typename T>

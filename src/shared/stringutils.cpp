@@ -53,22 +53,6 @@ bool startswith(const wchar_t* string, const wchar_t* subString)
   return *subString == '\0';
 }
 
-static fs::path normalize(const fs::path& path)
-{
-  fs::path result;
-
-  boost::locale::generator gen;
-  auto loc = gen("en_US.UTF-8");
-  for (fs::path::iterator iter = path.begin(); iter != path.end(); ++iter) {
-    if (*iter == "..") {
-      result = result.parent_path();
-    } else if (*iter != ".") {
-      result /= boost::to_lower_copy(iter->string(), loc);
-    }  // single dot is ignored
-  }
-  return result;
-}
-
 fs::path make_relative(const fs::path& fromIn, const fs::path& toIn)
 {
   // converting path to lower case to make iterator comparison work correctly

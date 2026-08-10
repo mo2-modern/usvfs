@@ -415,9 +415,12 @@ void __cdecl InitHooks(LPVOID parameters, size_t)
   try {
     manager = new usvfs::HookManager(*params, dllModule);
 
-    auto context   = manager->context();
-    auto exePath   = boost::dll::program_location();
-    auto libraries = context->librariesToForceLoad(exePath.filename().c_str());
+    // deliberately NOT the file-scope `context`: that one is created by
+    // usvfsConnectVFS in the controlling process, and is null here in the
+    // injected one. The manager's context is the live object in this process.
+    auto hookContext = manager->context();
+    auto exePath     = boost::dll::program_location();
+    auto libraries   = hookContext->librariesToForceLoad(exePath.filename().c_str());
     for (auto library : libraries) {
       if (std::filesystem::exists(library)) {
         const auto ret = LoadLibraryExW(library.c_str(), NULL, 0);
