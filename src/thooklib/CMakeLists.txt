@@ -28,7 +28,14 @@ file(GLOB sources CONFIGURE_DEPENDS "*.cpp" "*.h")
 source_group("" FILES ${sources})
 
 add_library(thooklib STATIC ${sources})
-target_link_libraries(thooklib PRIVATE shared asmjit::asmjit ${LIBUDIS86_LIBRARY} spdlog::spdlog_header_only)
+# asmjit is part of thooklib's PUBLIC interface: ttrampolinepool.h includes
+# <asmjit/asmjit.h> and its member signatures take asmjit::X86Assembler&. Linking
+# it PRIVATE withheld asmjit's ASMJIT_STATIC usage requirement from consumers, so
+# usvfs_dll compiled those headers with ASMJIT_API = __declspec(dllimport) and
+# imported symbols that live in a static lib (LNK4217/LNK4286 at every link).
+target_link_libraries(thooklib
+    PUBLIC asmjit::asmjit
+    PRIVATE shared ${LIBUDIS86_LIBRARY} spdlog::spdlog_header_only)
 target_include_directories(thooklib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 set_target_properties(thooklib PROPERTIES FOLDER injection)
 target_precompile_headers(shared PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../shared/pch.h)
