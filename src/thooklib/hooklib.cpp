@@ -52,8 +52,8 @@ using namespace usvfs;
 
 struct THookInfo
 {
-  LPVOID originalFunction;
-  LPVOID replacementFunction;
+  LPVOID originalFunction{};
+  LPVOID replacementFunction{};
   LPVOID detour;      // detour to call the original function after hook was installed.
   LPVOID trampoline;  // code fragment that decides whether the replacement function or
                       // detour is executed (preventing endless loops)

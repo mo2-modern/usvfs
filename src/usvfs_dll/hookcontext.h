@@ -156,14 +156,14 @@ private:
 private:
   static HookContext* s_Instance;
 
-  shared::SharedMemoryT m_ConfigurationSHM;
+  shared::SharedMemoryT m_ConfigurationSHM{};
   SharedParameters* m_Parameters{nullptr};
   RedirectionTreeContainer m_Tree;
   RedirectionTreeContainer m_InverseTree;
 
   std::vector<std::future<int>> m_Futures;
 
-  mutable std::map<DataIDT, boost::any> m_CustomData;
+  mutable std::map<DataIDT, boost::any> m_CustomData{};
 
   HMODULE m_DLLModule;
 

@@ -20,8 +20,8 @@ public:
   void signal();
 
 private:
-  LONG m_Counter;
-  DWORD m_OwnerId;
+  LONG m_Counter{};
+  DWORD m_OwnerId{};
   int m_Recursion;
-  HANDLE m_Semaphore;
+  HANDLE m_Semaphore{};
 };

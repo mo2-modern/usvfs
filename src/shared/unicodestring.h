@@ -89,7 +89,7 @@ private:
   void update();
 
   UNICODE_STRING m_Data;
-  std::vector<wchar_t> m_Buffer;
+  std::vector<wchar_t> m_Buffer{};
 };
 
 }  // namespace usvfs

@@ -101,8 +101,8 @@ struct Result
   }
 
   bool valid{false};
-  STARTUPINFO startupInfo;
-  PROCESS_INFORMATION processInfo;
+  STARTUPINFO startupInfo{};
+  PROCESS_INFORMATION processInfo{};
   DWORD errorCode{0UL};
 
   HANDLE stdoutPipe{INVALID_HANDLE_VALUE};

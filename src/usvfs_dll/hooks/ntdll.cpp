@@ -43,7 +43,7 @@ class RedirectionInfo
 {
 public:
   UnicodeString path;
-  bool redirected;
+  bool redirected{};
 
   RedirectionInfo() {}
   RedirectionInfo(UnicodeString path, bool redirected)

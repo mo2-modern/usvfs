@@ -68,7 +68,7 @@ public:
   bool active() const;
 
 private:
-  DWORD m_LastError;
+  DWORD m_LastError{};
   bool m_Active;
   MutExHookGroup m_Group;
 };

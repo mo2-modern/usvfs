@@ -98,7 +98,7 @@ class RerouteW
   bool m_PathCreated{false};
   bool m_NewReroute{false};
 
-  RedirectionTree::NodePtrT m_FileNode;
+  RedirectionTree::NodePtrT m_FileNode{};
 
 public:
   RerouteW() = default;
