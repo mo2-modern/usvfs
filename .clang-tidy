@@ -1,0 +1,43 @@
+# clang-tidy configuration.
+#
+# A NEW file, deliberately: new files carry no merge-conflict surface against
+# upstream, so adopting static analysis costs nothing on a sync. It is also inert
+# for the shipping build -- only clang-tidy and clangd read it, MSVC does not.
+#
+# Checks are adopted ONE AT A TIME, each with its own commit and a review of every
+# finding. A mass `run-clang-tidy --fix` across the tree is the anti-pattern: it
+# is the mass-reformat scenario with semantics attached.
+#
+# ADOPTED
+#   cppcoreguidelines-pro-type-member-init
+#     Members left uninitialised by a constructor. Invisible to MSVC at /W4 /WX,
+#     survives testing, and produced real defects across this tree -- save-game
+#     fields shown in the UI, download bookkeeping, raw owner pointers.
+#
+#     Two of the three shapes it reports are noise here and should be read, not
+#     applied: "does not initialize these bases" fires on constructors whose body
+#     initialises the base through a Win32 call, and "uninitialized record type"
+#     fires on locals that are fully assigned on the next line.
+#
+# REFUSED -- would break the plugin ABI. See uibase/.clang-tidy for the argument.
+#   performance-enum-size                 changes an enum's underlying type, and
+#                                         the layout of everything holding one
+#   performance-unnecessary-value-param   changes mangled names and calling
+#                                         convention of exported functions
+#   bugprone-easily-swappable-parameters  demands reordering public signatures
+#   modernize-*, readability-*            high churn, no defects, touches headers
+
+Checks: >
+  -*,
+  cppcoreguidelines-pro-type-member-init,
+  -performance-enum-size,
+  -performance-unnecessary-value-param,
+  -bugprone-easily-swappable-parameters,
+  -modernize-*,
+  -readability-*
+
+HeaderFilterRegex: '.*[\\/]usvfs[\\/](src|include)[\\/].*'
+
+# Never fail a build on a lint. MSVC at /W4 /WX is the gate; this is advisory.
+WarningsAsErrors: ''
+FormatStyle: file
